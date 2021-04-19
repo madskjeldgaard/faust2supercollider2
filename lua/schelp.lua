@@ -6,7 +6,9 @@ function M.argument_list(parsed_metadata)
 
 	for paramName,paramContents in pairs(params) do
 		argList = argList .. "ARGUMENT::" .. paramContents.label .. "\n"
-		argList = argList .. paramContents.min .. " to " .. paramContents.max .. ".\n\n"
+		if (paramContents.min ~= nil and paramContents.max ~= nil) then
+			argList = argList .. paramContents.min .. " to " .. paramContents.max .. ".\n\n"
+		end
 	end
 
 	return argList
@@ -17,7 +19,7 @@ local args = M.argument_list(parsed_metadata)
 local ins = parsed_metadata.numInputs
 local outs = parsed_metadata.numOutputs
 
-local name = parsed_metadata.name 
+local name = parsed_metadata.name -- @TODO: or parsed_metadata.filename
 local author = parsed_metadata.author
 local help = string.format([[CLASS:: %s
 SUMMARY:: A faust plugin

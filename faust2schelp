@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+INFILE=$1
+
+if [[ -e "$INFILE" ]]; then
+
+	# Convert dsp to json
+	echo "Converting $INFILE to json..."
+	BASENAME=${INFILE%.dsp}
+	JSONNAME=$INFILE.json
+	faust -json $INFILE -O . > /dev/null && echo "Done."
+
+	# Convert json to schelp
+	echo "Creating help file"
+	lua lua/faust2schelp.lua $JSONNAME && echo "Done creating helpfile $BASENAME.schelp"
+	rm $JSONNAME
+
+else
+	echo "Could not find $INFILE"
+	exit
+fi
